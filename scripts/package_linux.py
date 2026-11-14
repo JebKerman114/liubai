@@ -133,6 +133,7 @@ def flatpak():
         "\n[Context]\nshared=ipc;\nsockets=x11;\ndevices=dri;\n"
         "\n[Session Bus Policy]\norg.kde.StatusNotifierWatcher=talk\norg.freedesktop.IBus=talk\n", encoding="utf-8")
     repository = ROOT / "build/flatpak-repo"
+    run("flatpak", "build-finish", stage)
     run("flatpak", "build-export", "--disable-sandbox", repository, stage, "stable")
     run("flatpak", "build-bundle", f"--arch={ARCH}", "--runtime-repo=https://flathub.org/repo/flathub.flatpakrepo",
         repository, RELEASE / f"{NAME}.flatpak", APP_ID, "stable")

@@ -99,6 +99,26 @@ jobs:
       - name: Package Windows
         if: runner.os == 'Windows'
         run: python scripts/package_windows.py
+      - name: Verify Windows installers
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $setup = (Get-ChildItem release/*-setup.exe)[0].FullName
+          $target = Join-Path $env:RUNNER_TEMP 'liubai-setup-check'
+          $data = Join-Path $env:RUNNER_TEMP 'liubai-installer-data'
+          $result = Start-Process -FilePath $setup -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/SP-', "/DIR=`"$target`"" -Wait -PassThru
+          if ($result.ExitCode -ne 0) { throw "EXE install failed: $($result.ExitCode)" }
+          & "$target\liubai.exe" --smoke-test --no-tray --data-dir $data
+          if ($LASTEXITCODE -ne 0) { throw 'EXE installed app failed' }
+          Start-Process -FilePath "$target\unins000.exe" -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART' -Wait
+          $msi = (Get-ChildItem release/*.msi)[0].FullName
+          $target = Join-Path $env:RUNNER_TEMP 'liubai-msi-check'
+          $result = Start-Process msiexec.exe -ArgumentList "/i `"$msi`" /qn /norestart INSTALLFOLDER=`"$target`"" -Wait -PassThru
+          if ($result.ExitCode -notin 0, 3010) { throw "MSI install failed: $($result.ExitCode)" }
+          & "$target\liubai.exe" --smoke-test --no-tray --data-dir $data
+          if ($LASTEXITCODE -ne 0) { throw 'MSI installed app failed' }
+          $result = Start-Process msiexec.exe -ArgumentList "/x `"$msi`" /qn /norestart" -Wait -PassThru
+          if ($result.ExitCode -notin 0, 3010) { throw "MSI uninstall failed: $($result.ExitCode)" }
       - name: Upload packages
         uses: actions/upload-artifact@v4
         with:

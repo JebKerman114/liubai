@@ -111,7 +111,7 @@ def msi():
             element(feature, "ComponentRef", Id=component_id)
     script = WORK / "installer.wxs"
     ET.ElementTree(root).write(script, encoding="utf-8", xml_declaration=True)
-    run("wix", "build", "-arch", ARCH, "-o", RELEASE / f"{NAME}.msi", script)
+    run("wix", "build", "-arch", ARCH, "-pdbtype", "none", "-o", RELEASE / f"{NAME}.msi", script)
 
 
 def msix():

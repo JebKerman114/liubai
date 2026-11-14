@@ -762,6 +762,7 @@ class Window(QWidget):
         auto = menu.addAction("登录后自动启动")
         auto.setCheckable(True)
         auto.setChecked(desktop.autostart_enabled())
+        auto.setEnabled(not os.environ.get("FLATPAK_ID"))
         auto.triggered.connect(self.set_autostart)
         menu.addSeparator()
         menu.addAction("导出备份…", self.export_backup)
