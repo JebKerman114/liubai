@@ -121,7 +121,7 @@ def flatpak():
     binary.chmod(0o755)
     for source, destination in [
         (ROOT / "packaging/liubai.desktop", files / f"share/applications/{APP_ID}.desktop"),
-        (ROOT / "assets/liubai.svg", files / f"share/icons/hicolor/scalable/apps/{APP_ID}.svg"),
+        (ROOT / "assets/liubai.png", files / f"share/icons/hicolor/256x256/apps/{APP_ID}.png"),
         (ROOT / f"packaging/{APP_ID}.metainfo.xml", files / f"share/metainfo/{APP_ID}.metainfo.xml"),
     ]:
         destination.parent.mkdir(parents=True, exist_ok=True)

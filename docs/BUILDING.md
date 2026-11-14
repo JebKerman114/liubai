@@ -15,7 +15,7 @@
 
 ```sh
 sudo apt-get update
-sudo apt-get install -y python3-venv binutils curl libegl1 libgl1 libxcb-cursor0 libxkbcommon0 libdbus-1-3 fonts-noto-cjk flatpak squashfs-tools zstd
+sudo apt-get install -y python3-venv binutils curl libegl1 libgl1 libxcb-cursor0 libxkbcommon0 libdbus-1-3 fonts-noto-cjk flatpak ostree squashfs-tools zstd
 python3 -m venv .venv-build
 .venv-build/bin/python -m pip install -r requirements-build.txt
 .venv-build/bin/python scripts/build.py
