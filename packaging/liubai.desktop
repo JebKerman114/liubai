@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=留白
+GenericName=待办与便签
+Comment=桌面待办与便签
+Exec=liubai
+Icon=liubai
+Terminal=false
+Categories=Utility;
+Keywords=todo;notes;sticky;待办;便签;留白;
+StartupWMClass=liubai
